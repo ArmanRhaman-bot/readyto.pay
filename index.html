@@ -45,15 +45,19 @@
         <div class="bot-ring r2"></div>
       </div>
 
-      <!-- Bot Name -->
-      <h1 class="bot-name" id="botName">Loading...</h1>
-      <p class="invoice-label">Payment Invoice</p>
+  <!-- Bot Name -->
+<h1 class="bot-name" id="botName">Loading...</h1>
+<p class="invoice-label">Payment Invoice</p>
 
-      <!-- Invoice ID -->
-      <div class="info-row">
-        <span class="info-key">Invoice ID</span>
-        <span class="info-val mono" id="invoiceId">—</span>
-      </div>
+<div class="verified-badge">
+  ✓ Verified Binance Merchant
+</div>
+
+<!-- Invoice ID -->
+<div class="info-row">
+  <span class="info-key">Invoice ID</span>
+  <span class="info-val mono" id="invoiceId">—</span>
+</div>
 
       <!-- Amount -->
       <div class="amount-block">
@@ -101,9 +105,9 @@
 
       <!-- Transaction ID Input -->
       <div class="txn-section">
-        <label class="txn-label">Transaction ID</label>
+        <label class="txn-label">ORDER ID</label>
         <div class="txn-input-wrap">
-          <input type="text" id="txnInput" class="txn-input" placeholder="Paste your Binance TXN ID here..." />
+          <input type="text" id="txnInput" class="txn-input" placeholder="Paste your Binance ORDER ID here..." />
         </div>
         <button class="verify-btn" onclick="verifyPayment()">
           <span class="btn-text">Verify Payment</span>
