@@ -61,8 +61,8 @@
 
       <!-- Amount -->
       <div class="amount-block">
-        <span class="amount-currency">USDT</span>
         <span class="amount-value" id="amountDisplay">0.00</span>
+<span class="amount-currency">USDT</span>
       </div>
 
       <!-- Binance Pay Section -->
@@ -75,13 +75,26 @@
         </div>
 
         <div class="uid-block">
-          <span class="uid-label">Binance UID</span>
-          <span class="uid-value mono" id="binanceUID">Loading...</span>
-          <button class="copy-btn" id="copyUidBtn" onclick="copyUID()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            Copy
-          </button>
-        </div>
+
+  <div class="uid-label">
+    BINANCE UID
+  </div>
+
+  <div class="uid-row">
+    <span class="uid-value mono" id="binanceUID">
+      Loading...
+    </span>
+
+    <button
+      class="copy-btn"
+      id="copyUidBtn"
+      onclick="copyUID()"
+    >
+      Copy
+    </button>
+  </div>
+
+</div>
 
         <div class="steps">
           <div class="step">
@@ -98,7 +111,7 @@
           </div>
           <div class="step">
             <div class="step-num">4</div>
-            <div class="step-text">Enter the <strong>Transaction ID</strong> below and verify</div>
+            <div class="step-text">Enter the <strong>ORDER ID</strong> below and verify</div>
           </div>
         </div>
       </div>
