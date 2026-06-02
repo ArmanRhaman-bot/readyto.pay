@@ -399,44 +399,31 @@ body {
 }
 
 .uid-block{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  background:#0b0e11;
+  border:1px solid rgba(240,185,11,.25);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:18px;
 }
 
-.uid-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--bnb-muted);
-  font-weight: 600;
-  white-space: nowrap;
+.uid-label{
+  display:block;
+  font-size:11px;
+  letter-spacing:2px;
+  color:#848E9C;
+  margin-bottom:10px;
 }
 
 .uid-value{
-  flex:1;
-  font-size:15px;
+  font-size:18px;
   font-weight:700;
   color:#F0B90B;
-  white-space:nowrap;
   font-family:'DM Mono', monospace;
 }
 
-.copy-btn {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  background: rgba(240,185,11,0.12);
-  border: 1px solid rgba(240,185,11,0.3);
-  border-radius: 6px;
-  color: var(--bnb-yellow);
-  font-size: 12px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
+.copy-btn{
+  float:right;
+  margin-top:-32px;
 }
 
 .copy-btn:hover {
