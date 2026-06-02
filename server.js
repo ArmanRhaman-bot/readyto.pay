@@ -9,10 +9,23 @@ app.use(express.json());
 // Root folder serve করবে
 app.use(express.static(__dirname));
 
-// POST /verify
-app.post("/verify", async (req, res) => {
-  const { order_id, amount, uid, admin_id, invoice_id, bot_name } = req.body;
 
+const submittedOrders = new Set();
+
+app.post("/verify", async (req, res) => {
+
+  const {
+    order_id,
+    amount,
+    uid,
+    admin_id,
+    invoice_id,
+    bot_name,
+    userId,
+    username
+  } = req.body;
+
+  
   if (!order_id || !/^\d{18}$/.test(order_id)) {
     return res.json({ success: false, message: "Invalid Order ID format." });
   }
@@ -20,6 +33,15 @@ app.post("/verify", async (req, res) => {
   if (!admin_id) {
     return res.json({ success: false, message: "Admin ID missing." });
   }
+
+if(submittedOrders.has(order_id)){
+    return res.json({
+      success:false,
+      message:"Deposit request already submitted"
+    });
+  }
+
+  submittedOrders.add(order_id);
 
   const token = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -34,9 +56,12 @@ app.post("/verify", async (req, res) => {
 `🔔 New Payment Submission
 
 🤖 Bot: ${bot_name || "N/A"}
+👤 Username: @${username || "NoUsername"}
+🆔 User ID: ${userId || "N/A"}
+
 📋 Invoice: ${invoice_id || "N/A"}
 💰 Amount: ${amount} USDT
-🆔 Binance UID: ${uid}
+💳 Binance UID: ${uid}
 🧾 Order ID: ${order_id}`;
 
   try {
