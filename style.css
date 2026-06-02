@@ -422,19 +422,41 @@ body {
 }
 
 .copy-btn{
-  float:right;
-  margin-top:-32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  height:38px;
+  padding:0 16px;
+
+  background:rgba(240,185,11,.08);
+  border:1px solid rgba(240,185,11,.25);
+  border-radius:10px;
+
+  color:#F0B90B;
+  font-size:13px;
+  font-weight:700;
+  font-family:'Syne', sans-serif;
+
+  cursor:pointer;
+  transition:.25s;
 }
 
-.copy-btn:hover {
-  background: rgba(240,185,11,0.22);
-  border-color: var(--bnb-yellow);
+.copy-btn:hover{
+  background:rgba(240,185,11,.15);
+  border-color:#F0B90B;
+  box-shadow:0 0 12px rgba(240,185,11,.2);
 }
 
-.copy-btn.copied {
-  background: rgba(3,166,109,0.15);
-  border-color: var(--bnb-green);
-  color: var(--bnb-green);
+.copy-btn:active{
+  transform:scale(.96);
+}
+
+.copy-btn.copied{
+  background:rgba(3,166,109,.15);
+  border-color:#03A66D;
+  color:#03A66D;
 }
 
 /* Steps */
