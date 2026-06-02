@@ -21,13 +21,16 @@ function getParams() {
     uid:       p.get("uid")        || "N/A",
     adminId:   p.get("admin")      || "",       // hidden from UI
     invoiceId: p.get("invoice_id") || generateInvoiceId(),
+userId: p.get("user_id") || "",
+  username: p.get("username") || ""
   };
 }
 
 function generateInvoiceId() {
-  const ts   = Date.now().toString(36).toUpperCase();
-  const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
-  return `INV-${ts}-${rand}`;
+  return "BN" +
+    Math.random().toString(36)
+    .substring(2, 8)
+    .toUpperCase();
 }
 
 // ── Render page ───────────────────────────────
@@ -40,8 +43,7 @@ function renderPage() {
 
   const amt = parseFloat(p.amount);
   const displayAmt = isNaN(amt) ? "0.00" : amt.toFixed(2);
-  document.getElementById("amountDisplay").textContent = displayAmt;
-  document.getElementById("amountStep").textContent    = `${displayAmt} USDT`;
+  document.getElementById("amountDisplay").textContent = displayAmt; document.getElementById("amountStep").textContent    = `${displayAmt} USDT`;
 }
 
 // ── Copy UID ──────────────────────────────────
@@ -138,7 +140,9 @@ async function verifyPayment() {
         uid:        p.uid,
         admin_id:   p.adminId,
         invoice_id: p.invoiceId,
-        bot_name:   p.botName,
+        userId: p.userId,
+  username: p.username,
+        bot_name:   p.botName
       })
     });
 
