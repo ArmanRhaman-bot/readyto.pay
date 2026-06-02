@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invoice Payment</title>
+  <title>Binance Pay Invoice | Secure Payment</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
@@ -45,24 +45,24 @@
         <div class="bot-ring r2"></div>
       </div>
 
-  <!-- Bot Name -->
-<h1 class="bot-name" id="botName">Loading...</h1>
-<p class="invoice-label">Payment Invoice</p>
+      <!-- Bot Name -->
+      <h1 class="bot-name" id="botName">Loading...</h1>
+      <p class="invoice-label">Payment Invoice</p>
 
-<div class="verified-badge">
-  ✓ Verified Binance Merchant
-</div>
+      <div class="verified-badge">
+        ✓ Verified Binance Merchant
+      </div>
 
-<!-- Invoice ID -->
-<div class="info-row">
-  <span class="info-key">Invoice ID</span>
-  <span class="info-val mono" id="invoiceId">—</span>
-</div>
+      <!-- Invoice ID -->
+      <div class="info-row">
+        <span class="info-key">Invoice ID</span>
+        <span class="info-val mono" id="invoiceId">—</span>
+      </div>
 
       <!-- Amount -->
       <div class="amount-block">
         <span class="amount-value" id="amountDisplay">0.00</span>
-<span class="amount-currency">USDT</span>
+        <span class="amount-currency">USDT</span>
       </div>
 
       <!-- Binance Pay Section -->
@@ -75,82 +75,57 @@
         </div>
 
         <div class="uid-block">
-
-  <div class="uid-label">
-    BINANCE UID
-  </div>
-
-  <div class="uid-row">
-    <span class="uid-value mono" id="binanceUID">
-      Loading...
-    </span>
-
-    <button
-  class="copy-btn"
-  id="copyUidBtn"
-  onclick="copyUID()"
->
-  ⧉ Copy
-</button>
-  </div>
-
-</div>
+          <div class="uid-label">BINANCE UID</div>
+          <div class="uid-row">
+            <span class="uid-value mono" id="binanceUID">Loading...</span>
+            <button class="copy-btn" id="copyUidBtn" onclick="copyUID()">⧉ Copy</button>
+          </div>
+        </div>
 
         <div class="steps">
-
-  <div class="step">
-    <div class="step-num">1</div>
-    <div class="step-text">
-      Open <strong>Binance App</strong> → Send
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-num">2</div>
-    <div class="step-text">
-      Tap <strong>"Send"</strong> → <strong>"Binance User"</strong>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-num">3</div>
-    <div class="step-text">
-      Enter the <strong>UID</strong> above
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-num">4</div>
-    <div class="step-text">
-      Send exactly <strong class="highlight" id="amountStep">0.00 USDT</strong>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-num">5</div>
-    <div class="step-text">
-      Enter the <strong>ORDER ID</strong> below and verify
-    </div>
-  </div>
-
-</div>
-
-      <!-- Transaction ID Input -->
-      <div class="txn-section">
-        <label class="txn-label">ORDER ID</label>
-        <div class="txn-input-wrap">
-          <input type="text" id="txnInput" class="txn-input" placeholder="Paste your Binance ORDER ID here..." />
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">Open <strong>Binance App</strong> → Send</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">Tap <strong>"Send"</strong> → <strong>"Binance User"</strong></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text">Enter the <strong>UID</strong> above</div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text">Send exactly <strong class="highlight" id="amountStep">0.00 USDT</strong></div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-text">Enter the <strong>ORDER ID</strong> below and verify</div>
+          </div>
         </div>
-        <button class="verify-btn" onclick="verifyPayment()">
-          <span class="btn-text">Verify Payment</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
-        </button>
+
+        <!-- ORDER ID Input Section -->
+        <div class="txn-section">
+          <label class="txn-label">ORDER ID</label>
+          <div class="txn-input-wrap">
+            <input type="text" id="txnInput" class="txn-input" placeholder="Paste your Binance ORDER ID here..." />
+          </div>
+          <button class="verify-btn" onclick="verifyPayment()">
+            <span class="btn-text">Verify Payment</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12l5 5L20 7"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Footer -->
       <div class="card-footer">
         <span class="footer-secure">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+          </svg>
           Secured transaction
         </span>
         <span class="footer-powered">Powered by Binance Pay</span>
@@ -159,7 +134,4 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
-</body>
-            </html>
-            
+  <script>
