@@ -1,34 +1,22 @@
 /* =============================================
-   server.js — Express Backend
-   Render Web Service এ deploy করো।
-
-   Environment Variables (Render Dashboard এ সেট করো):
-   - TELEGRAM_BOT_TOKEN : তোমার Telegram bot token
-   - PORT               : Render auto-set করে (8080)
+   server.js — Express Backend for Binance Invoice
+   Node.js 18+ built-in fetch ব্যবহার করে
    ============================================= */
 
-const express  = require("express");
-const path     = require("path");
-const fetch    = (...args) => import("node-fetch").then(({ default: f }) => f(...args));
+const express = require("express");
+const path    = require("path");
 
 const app  = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // HTML/CSS/JS এখানে রাখো
+app.use(express.static(path.join(__dirname, "public")));
 
 // ── POST /verify ──────────────────────────────
 app.post("/verify", async (req, res) => {
-  const {
-    order_id,
-    amount,
-    uid,
-    admin_id,   // Telegram chat_id — URL এ hidden ছিল
-    invoice_id,
-    bot_name,
-  } = req.body;
+  const { order_id, amount, uid, admin_id, invoice_id, bot_name } = req.body;
 
-  // Basic server-side validation
+  // Server-side validation
   if (!order_id || !/^\d{18}$/.test(order_id)) {
     return res.json({ success: false, message: "Invalid Order ID format." });
   }
@@ -42,7 +30,6 @@ app.post("/verify", async (req, res) => {
     return res.json({ success: false, message: "Server config error." });
   }
 
-  // ── Build Telegram message ──
   const text = [
     `🔔 *New Payment Submission*`,
     ``,
@@ -74,18 +61,18 @@ app.post("/verify", async (req, res) => {
     if (tgData.ok) {
       res.json({ success: true });
     } else {
-      console.error("Telegram error:", tgData);
+      console.error("Telegram error:", JSON.stringify(tgData));
       res.json({ success: false, message: "Failed to notify admin." });
     }
   } catch (err) {
-    console.error("Fetch error:", err);
+    console.error("Fetch error:", err.message);
     res.json({ success: false, message: "Server error. Try again." });
   }
 });
 
-// ── Fallback: serve index.html for all GET ──
+// ── Catch-all → index.html ────────────────────
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
