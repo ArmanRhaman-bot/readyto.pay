@@ -361,13 +361,14 @@ body {
   border: 1px solid rgba(240,185,11,0.2);
 }
 
-.amount-value {
-  font-size: 44px;
-  font-weight: 800;
-  color: var(--bnb-text);
-  letter-spacing: -2px;
-  line-height: 1;
-  font-family: var(--font-mono);
+.amount-value{
+  font-size:44px;
+  font-weight:800;
+  color:#F0B90B;
+  letter-spacing:-2px;
+  line-height:1;
+  font-family:'DM Mono', monospace;
+  text-shadow:0 0 15px rgba(240,185,11,.25);
 }
 
 /* ============================
@@ -397,16 +398,17 @@ body {
   letter-spacing: 0.5px;
 }
 
-.uid-block {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--bnb-dark);
-  border: 1px solid rgba(240,185,11,0.2);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
+.uid-block{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:#0b0e11;
+  border:1px solid rgba(240,185,11,.25);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:18px;
+  flex-wrap:nowrap;
 }
 
 .uid-label {
@@ -418,12 +420,15 @@ body {
   white-space: nowrap;
 }
 
-.uid-value {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--bnb-yellow);
-  word-break: break-all;
+.uid-value{
+  flex:1;
+  font-size:15px;
+  font-weight:700;
+  color:#F0B90B;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-family:'DM Mono', monospace;
 }
 
 .copy-btn {
@@ -584,6 +589,20 @@ body {
   background: var(--bnb-green);
 }
 
+.verified-badge{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:max-content;
+  margin:8px auto 18px;
+  padding:6px 12px;
+  border-radius:20px;
+  background:rgba(240,185,11,.08);
+  border:1px solid rgba(240,185,11,.18);
+  color:#F0B90B;
+  font-size:12px;
+  font-weight:700;
+}
 /* ============================
    Footer
    ============================ */
@@ -642,7 +661,33 @@ body {
 
 /* Mobile */
 @media (max-width: 480px) {
-  .card { padding: 24px 16px 20px; }
-  .amount-value { font-size: 36px; }
-  .bot-name { font-size: 20px; }
+
+  .card{
+    background: linear-gradient(
+      180deg,
+      #1E2329 0%,
+      #161A1F 100%
+    );
+    border:1px solid #2B3139;
+    border-radius:20px;
+    padding:32px 24px 24px;
+    box-shadow:
+      0 24px 60px rgba(0,0,0,.55),
+      0 0 0 1px rgba(240,185,11,.08);
+  }
+
+  .amount-value{
+    font-size:44px;
+    font-weight:800;
+    color:#F0B90B;
+    letter-spacing:-2px;
+    line-height:1;
+    font-family:'DM Mono', monospace;
+    text-shadow:0 0 15px rgba(240,185,11,.25);
+  }
+
+  .bot-name{
+    font-size:20px;
+  }
+
 }
