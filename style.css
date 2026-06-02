@@ -402,13 +402,6 @@ body {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  background:#0b0e11;
-  border:1px solid rgba(240,185,11,.25);
-  border-radius:12px;
-  padding:12px 14px;
-  margin-bottom:18px;
-  flex-wrap:nowrap;
 }
 
 .uid-label {
@@ -426,8 +419,6 @@ body {
   font-weight:700;
   color:#F0B90B;
   white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
   font-family:'DM Mono', monospace;
 }
 
