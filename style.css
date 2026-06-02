@@ -407,11 +407,18 @@ body {
 }
 
 .uid-label{
-  display:block;
   font-size:11px;
   letter-spacing:2px;
+  text-transform:uppercase;
   color:#848E9C;
   margin-bottom:10px;
+}
+
+.uid-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
 }
 
 .uid-value{
@@ -419,44 +426,31 @@ body {
   font-weight:700;
   color:#F0B90B;
   font-family:'DM Mono', monospace;
+  white-space:nowrap;
 }
 
 .copy-btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-
-  height:38px;
-  padding:0 16px;
-
+  height:36px;
+  padding:0 14px;
+  border-radius:8px;
+  border:1px solid rgba(240,185,11,.35);
   background:rgba(240,185,11,.08);
-  border:1px solid rgba(240,185,11,.25);
-  border-radius:10px;
-
   color:#F0B90B;
   font-size:13px;
   font-weight:700;
-  font-family:'Syne', sans-serif;
-
   cursor:pointer;
-  transition:.25s;
+  white-space:nowrap;
+  transition:.2s;
 }
 
 .copy-btn:hover{
   background:rgba(240,185,11,.15);
-  border-color:#F0B90B;
-  box-shadow:0 0 12px rgba(240,185,11,.2);
-}
-
-.copy-btn:active{
-  transform:scale(.96);
 }
 
 .copy-btn.copied{
-  background:rgba(3,166,109,.15);
+  background:#03A66D;
   border-color:#03A66D;
-  color:#03A66D;
+  color:#fff;
 }
 
 /* Steps */
