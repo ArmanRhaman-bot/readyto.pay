@@ -27,10 +27,9 @@ userId: p.get("user_id") || "",
 }
 
 function generateInvoiceId() {
-  return "BN" +
-    Math.random().toString(36)
-    .substring(2, 8)
-    .toUpperCase();
+  return "BP" + Math.floor(
+    10000000 + Math.random() * 90000000
+  );
 }
 
 // ── Render page ───────────────────────────────
