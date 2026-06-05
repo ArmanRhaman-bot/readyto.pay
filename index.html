@@ -1,138 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Binance Pay Invoice | Secure Payment</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Invoice</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-  <!-- Animated background grid -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
+<div class="bg-orbs">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+</div>
 
-  <div class="page-wrapper">
-    <div class="card">
+<div class="wrap">
+  <div class="card">
 
-      <!-- Bot Animated Icon -->
-      <div class="bot-icon-wrap">
-        <div class="bot-icon">
+    <!-- Header -->
+    <div class="card-header">
+      <div class="bot-anim">
+        <div class="bot-wrap">
           <div class="bot-head">
-            <div class="bot-ear left"></div>
-            <div class="bot-ear right"></div>
-            <div class="bot-face">
-              <div class="bot-eye left">
-                <div class="pupil"></div>
+            <div class="ear l"></div>
+            <div class="ear r"></div>
+            <div class="antenna"><div class="dot"></div></div>
+            <div class="face">
+              <div class="eyes">
+                <div class="eye"><div class="pupil"></div></div>
+                <div class="eye"><div class="pupil"></div></div>
               </div>
-              <div class="bot-eye right">
-                <div class="pupil"></div>
-              </div>
-              <div class="bot-mouth"></div>
-            </div>
-            <div class="bot-antenna">
-              <div class="antenna-dot"></div>
+              <div class="mouth"></div>
             </div>
           </div>
           <div class="bot-body">
-            <div class="bot-chest">
-              <div class="chest-light"></div>
-            </div>
+            <div class="chest"><div class="light"></div></div>
           </div>
         </div>
-        <div class="bot-ring r1"></div>
-        <div class="bot-ring r2"></div>
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
       </div>
 
-      <!-- Bot Name -->
       <h1 class="bot-name" id="botName">Loading...</h1>
-      <p class="invoice-label">Payment Invoice</p>
-
-      <div class="verified-badge">
-        ✓ Verified Binance Merchant
-      </div>
-
-      <!-- Invoice ID -->
-      <div class="info-row">
-        <span class="info-key">Invoice ID</span>
-        <span class="info-val mono" id="invoiceId">—</span>
-      </div>
-
-      <!-- Amount -->
-      <div class="amount-block">
-        <span class="amount-value" id="amountDisplay">0.00</span>
-        <span class="amount-currency">USDT</span>
-      </div>
-
-      <!-- Binance Pay Section -->
-      <div class="pay-section">
-        <div class="pay-logo">
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-            <path d="M16 2L19.5 8.5L26.5 5.5L23.5 12.5L30 16L23.5 19.5L26.5 26.5L19.5 23.5L16 30L12.5 23.5L5.5 26.5L8.5 19.5L2 16L8.5 12.5L5.5 5.5L12.5 8.5L16 2Z" fill="#F0B90B"/>
-          </svg>
-          <span>Binance Pay</span>
-        </div>
-
-        <div class="uid-block">
-          <div class="uid-label">BINANCE UID</div>
-          <div class="uid-row">
-            <span class="uid-value mono" id="binanceUID">Loading...</span>
-            <button class="copy-btn" id="copyUidBtn" onclick="copyUID()">⧉ Copy</button>
-          </div>
-        </div>
-
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-text">Open <strong>Binance App</strong> → Send</div>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-text">Tap <strong>"Send"</strong> → <strong>"Binance User"</strong></div>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-text">Enter the <strong>UID</strong> above</div>
-          </div>
-          <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-text">Send exactly <strong class="highlight" id="amountStep">0.00 USDT</strong></div>
-          </div>
-          <div class="step">
-            <div class="step-num">5</div>
-            <div class="step-text">Enter the <strong>ORDER ID</strong> for verify</div>
-          </div>
-        </div>
-</div>
-        <!-- ORDER ID Input Section -->
-   <div>     
-<div class="txn-section">
-          <label class="txn-label">Pay confirm here</label>
-          <div class="txn-input-wrap">
-            <input type="text" id="txnInput" class="txn-input" placeholder="Paste your Binance ORDER ID here..." />
-          </div>
-          <button class="verify-btn" onclick="verifyPayment()">
-            <span class="btn-text">Verify Payment</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12l5 5L20 7"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="card-footer">
-        <span class="footer-secure">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-          </svg>
-          Secured transaction
-        </span>
-        <span class="footer-powered">Powered by Binance Pay</span>
-      </div>
-
+      <div class="badge">✦ Verified Merchant</div>
     </div>
-  </div>
 
-  <script>
+    <!-- Invoice info -->
+    <div class="info-strip">
+      <div class="info-item">
+        <span class="il">Invoice</span>
+        <span class="iv mono" id="invoiceId">—</span>
+      </div>
+      <div class="divider-v"></div>
+      <div class="info-item center">
+        <span class="il">Network</span>
+        <span class="iv">BEP-20</span>
+      </div>
+      <div class="divider-v"></div>
+      <div class="info-item right">
+        <span class="il">Status</span>
+        <span class="iv pending">Pending</span>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <div class="amount-card">
+      <div class="amount-label">Amount Due</div>
+      <div class="amount-row">
+        <span class="amount-num" id="amountDisplay">0.00</span>
+        <span class="amount-unit">USDT</span>
+      </div>
+      <div class="amount-sub">Tether — Binance Pay</div>
+    </div>
+
+    <!-- UID -->
+    <div class="uid-card">
+      <div class="uid-top">
+        <div class="uid-icon">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4l3 5.5 6-2.5-2.5 6L28 16l-5.5 3 2.5 6-6-2.5L16 28l-3-5.5-6 2.5 2.5-6L4 16l5.5-3-2.5-6 6 2.5z" fill="#F97316"/>
+          </svg>
+        </div>
+        <span class="uid-title">Binance Pay UID</span>
+        <span class="uid-hint">Send to this account</span>
+      </div>
+      <div class="uid-body">
+        <span class="uid-val mono" id="binanceUID">Loading...</span>
+        <button class="copy-btn" id="copyUidBtn" onclick="copyUID()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-card">
+      <div class="steps-title">How to Pay</div>
+      <div class="steps">
+        <div class="step">
+          <div class="sn">1</div>
+          <div class="st">Open <strong>Binance App</strong> → tap <strong>Pay</strong></div>
+        </div>
+        <div class="step">
+          <div class="sn">2</div>
+          <div class="st">Tap <strong>"Send"</strong> → <strong>"Binance User"</strong></div>
+        </div>
+        <div class="step">
+          <div class="sn">3</div>
+          <div class="st">Search by <strong>UID</strong> above and confirm</div>
+        </div>
+        <div class="step">
+          <div class="sn">4</div>
+          <div class="st">Send exactly <strong class="hl" id="amountStep">0.00 USDT</strong></div>
+        </div>
+        <div class="step">
+          <div class="sn">5</div>
+          <div class="st">Copy the <strong>Order ID</strong> from Binance receipt</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-card">
+      <label class="submit-label">Enter Order ID to Confirm</label>
+      <input type="text" id="txnInput" class="txn-input" inputmode="numeric"
+        placeholder="e.g. 433700714681917440"/>
+      <div class="hint-text">18-digit Binance Order ID from your transaction receipt</div>
+      <button class="verify-btn" onclick="verifyPayment()">
+        <span class="btn-text">Confirm Payment</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="foot">
+      <span>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="#22c55e"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z"/></svg>
+        Secured &amp; Encrypted
+      </span>
+      <span>Powered by Binance Pay</span>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
