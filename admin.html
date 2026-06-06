@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --or:#F97316;--or2:#FB923C;--ord:rgba(249,115,22,.12);--orb:rgba(249,115,22,.22);
+  --bg:#FFF7F0;--card:#fff;--c2:#FFF3E8;--border:#FFE4CC;
+  --text:#1A1A1A;--muted:#78716C;--green:#16A34A;--red:#DC2626;--yellow:#D97706;
+  --sans:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{font-family:var(--sans);background:var(--bg);min-height:100vh;color:var(--text)}
+
+/* ── Login screen ── */
+#loginScreen{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:20px;
+}
+.login-card{
+  background:var(--card);border:1px solid var(--border);border-radius:24px;
+  padding:36px 28px;width:100%;max-width:400px;
+  box-shadow:0 20px 60px rgba(249,115,22,.1);
+  animation:up .5s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.login-logo{
+  width:64px;height:64px;background:linear-gradient(135deg,#F97316,#FB923C);
+  border-radius:18px;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;box-shadow:0 8px 20px rgba(249,115,22,.3);
+}
+.login-logo svg{color:#fff}
+.login-title{text-align:center;font-size:22px;font-weight:900;margin-bottom:4px}
+.login-sub{text-align:center;font-size:13px;color:var(--muted);margin-bottom:28px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+.field input{
+  padding:13px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:var(--mono);font-size:13px;color:var(--text);background:#fff;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.field input:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+.field input::placeholder{font-family:var(--sans);color:#C2B5AC}
+.login-btn{
+  width:100%;padding:14px;background:linear-gradient(135deg,#F97316,#FB923C);
+  border:none;border-radius:12px;color:#fff;font-family:var(--sans);
+  font-size:15px;font-weight:800;cursor:pointer;margin-top:6px;
+  box-shadow:0 6px 20px rgba(249,115,22,.3);transition:all .2s;
+}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(249,115,22,.38)}
+.login-err{font-size:13px;color:var(--red);text-align:center;margin-top:10px;display:none}
+
+/* ── App shell ── */
+#appScreen{display:none;min-height:100vh;flex-direction:column}
+#appScreen.show{display:flex}
+
+.topbar{
+  background:var(--card);border-bottom:1px solid var(--border);
+  padding:0 20px;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-logo{
+  width:36px;height:36px;background:linear-gradient(135deg,#F97316,#FB923C);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+}
+.topbar-title{font-size:16px;font-weight:800}
+.topbar-bot{font-size:12px;color:var(--muted);font-weight:500}
+.logout-btn{
+  padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;
+  background:transparent;font-family:var(--sans);font-size:12px;font-weight:700;
+  color:var(--muted);cursor:pointer;transition:.2s;
+}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+.main{flex:1;padding:20px 16px;max-width:900px;margin:0 auto;width:100%}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px;text-align:center;
+}
+.stat-num{font-size:28px;font-weight:900;line-height:1}
+.stat-lbl{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.c-pending{color:var(--yellow)}
+.c-confirmed{color:var(--green)}
+.c-cancelled{color:var(--red)}
+.c-vol{color:var(--or)}
+
+/* Filters */
+.filters{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.filter-btn{
+  padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);
+  background:var(--card);font-family:var(--sans);font-size:12px;font-weight:700;
+  color:var(--muted);cursor:pointer;white-space:nowrap;transition:.2s;
+}
+.filter-btn.active{background:var(--or);border-color:var(--or);color:#fff}
+
+/* Payment list */
+.pay-list{display:flex;flex-direction:column;gap:10px}
+.pay-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px;transition:.2s;
+}
+.pay-card:hover{box-shadow:0 4px 16px rgba(249,115,22,.1)}
+.pay-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pay-invoice{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+.pay-status{
+  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;
+  letter-spacing:.5px;
+}
+.s-pending{background:rgba(217,119,6,.1);color:var(--yellow)}
+.s-confirmed{background:rgba(22,163,74,.1);color:var(--green)}
+.s-cancelled{background:rgba(220,38,38,.1);color:var(--red)}
+
+.pay-amount{font-size:22px;font-weight:900;color:var(--or);margin-bottom:8px}
+.pay-amount span{font-size:13px;font-weight:700;color:var(--muted)}
+
+.pay-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.meta-item{display:flex;flex-direction:column;gap:2px}
+.meta-lbl{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.meta-val{font-size:12px;font-weight:600;font-family:var(--mono);color:var(--text);word-break:break-all}
+
+.pay-actions{display:flex;gap:8px}
+.action-btn{
+  flex:1;padding:9px;border-radius:10px;border:none;
+  font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;transition:.2s;
+}
+.btn-confirm{background:rgba(22,163,74,.1);color:var(--green)}
+.btn-confirm:hover{background:var(--green);color:#fff}
+.btn-cancel{background:rgba(220,38,38,.1);color:var(--red)}
+.btn-cancel:hover{background:var(--red);color:#fff}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-state .big{font-size:40px;margin-bottom:12px}
+.empty-state p{font-size:14px}
+
+.pagination{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px}
+.page-btn{
+  padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;
+  background:var(--card);font-family:var(--sans);font-size:13px;font-weight:700;
+  color:var(--text);cursor:pointer;transition:.2s;
+}
+.page-btn:hover:not(:disabled){border-color:var(--or);color:var(--or)}
+.page-btn:disabled{opacity:.4;cursor:default}
+.page-info{font-size:13px;color:var(--muted)}
+
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(60px);
+  background:var(--text);border-radius:10px;padding:11px 20px;
+  font-size:13px;font-weight:600;color:#fff;z-index:200;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+  transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .3s;
+  opacity:0;white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.success{background:#16A34A}
+.toast.error{background:#DC2626}
+
+.loading-spin{
+  display:inline-block;width:18px;height:18px;
+  border:2px solid rgba(249,115,22,.2);
+  border-top-color:var(--or);border-radius:50%;
+  animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 class="login-title">Admin Panel</h2>
+    <p class="login-sub">Login with your Telegram Bot Token</p>
+    <div class="field">
+      <label>Bot Token</label>
+      <input type="text" id="tokenInput" placeholder="1234567890:ABCdef..."/>
+    </div>
+    <div class="field">
+      <label>Your Telegram ID (Admin)</label>
+      <input type="text" id="adminInput" placeholder="Your chat_id e.g. 987654321" inputmode="numeric"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Login to Panel</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- App -->
+<div id="appScreen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div>
+        <div class="topbar-title">Invoice Admin</div>
+        <div class="topbar-bot" id="topBotName">—</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+
+  <div class="main">
+    <!-- Stats -->
+    <div class="stats" id="statsRow">
+      <div class="stat-card"><div class="stat-num" id="st-total">—</div><div class="stat-lbl">Total</div></div>
+      <div class="stat-card"><div class="stat-num c-pending" id="st-pending">—</div><div class="stat-lbl">Pending</div></div>
+      <div class="stat-card"><div class="stat-num c-confirmed" id="st-confirmed">—</div><div class="stat-lbl">Confirmed</div></div>
+      <div class="stat-card"><div class="stat-num c-vol" id="st-vol">—</div><div class="stat-lbl">Volume (USDT)</div></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <button class="filter-btn active" data-status="all" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" data-status="pending" onclick="setFilter('pending',this)">⏳ Pending</button>
+      <button class="filter-btn" data-status="confirmed" onclick="setFilter('confirmed',this)">✅ Confirmed</button>
+      <button class="filter-btn" data-status="cancelled" onclick="setFilter('cancelled',this)">❌ Cancelled</button>
+    </div>
+
+    <!-- List -->
+    <div class="pay-list" id="payList">
+      <div class="empty-state"><div class="loading-spin"></div></div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination" style="display:none">
+      <button class="page-btn" id="prevBtn" onclick="changePage(-1)">← Prev</button>
+      <span class="page-info" id="pageInfo">1 / 1</span>
+      <button class="page-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let currentFilter = "all", currentPage = 1, totalPages = 1;
+let _tt = null;
+
+function toast(msg, type="success") {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast " + type;
+  if(_tt) clearTimeout(_tt);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add("show")));
+  _tt = setTimeout(()=>t.classList.remove("show"), 3000);
+}
+
+// ── Login ─────────────────────────────────────
+async function doLogin() {
+  const token   = document.getElementById("tokenInput").value.trim();
+  const adminId = document.getElementById("adminInput").value.trim();
+  const err     = document.getElementById("loginErr");
+  err.style.display = "none";
+
+  if (!token || !adminId) { err.textContent="Fill all fields."; err.style.display="block"; return; }
+
+  const btn = document.querySelector(".login-btn");
+  btn.textContent = "Logging in..."; btn.disabled = true;
+
+  const r = await fetch("/admin/login",{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({botToken:token,adminId})
+  });
+  const d = await r.json();
+  btn.textContent = "Login to Panel"; btn.disabled = false;
+
+  if (d.success) {
+    document.getElementById("topBotName").textContent = "@" + d.botName;
+    showApp();
+  } else {
+    err.textContent = d.message || "Login failed.";
+    err.style.display = "block";
+  }
+}
+
+async function doLogout() {
+  await fetch("/admin/logout",{method:"POST"});
+  document.getElementById("appScreen").classList.remove("show");
+  document.getElementById("appScreen").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+}
+
+async function checkAuth() {
+  const r = await fetch("/admin/me");
+  const d = await r.json();
+  if (d.loggedIn) {
+    document.getElementById("topBotName").textContent = d.botName ? "@"+d.botName : "";
+    showApp();
+  }
+}
+
+function showApp() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("appScreen").style.display   = "flex";
+  document.getElementById("appScreen").classList.add("show");
+  loadStats();
+  loadPayments();
+}
+
+// ── Stats ─────────────────────────────────────
+async function loadStats() {
+  const r = await fetch("/admin/stats");
+  const d = await r.json();
+  document.getElementById("st-total").textContent     = d.total;
+  document.getElementById("st-pending").textContent   = d.pending;
+  document.getElementById("st-confirmed").textContent = d.confirmed;
+  document.getElementById("st-vol").textContent       = d.volume.toFixed(2);
+}
+
+// ── Payments ──────────────────────────────────
+function setFilter(status, btn) {
+  currentFilter = status; currentPage = 1;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  loadPayments();
+}
+
+function changePage(dir) {
+  currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
+  loadPayments();
+}
+
+async function loadPayments() {
+  document.getElementById("payList").innerHTML = '<div class="empty-state"><div class="loading-spin"></div></div>';
+
+  const r = await fetch(`/admin/payments?status=${currentFilter}&page=${currentPage}`);
+  const d = await r.json();
+  totalPages = d.pages || 1;
+
+  const pi = document.getElementById("pagination");
+  document.getElementById("pageInfo").textContent = `${currentPage} / ${totalPages}`;
+  document.getElementById("prevBtn").disabled = currentPage <= 1;
+  document.getElementById("nextBtn").disabled = currentPage >= totalPages;
+  pi.style.display = totalPages > 1 ? "flex" : "none";
+
+  const list = document.getElementById("payList");
+
+  if (!d.payments.length) {
+    list.innerHTML = '<div class="empty-state"><div class="big">📭</div><p>No payments found</p></div>';
+    return;
+  }
+
+  list.innerHTML = d.payments.map(p => {
+    const date = new Date(p.createdAt).toLocaleString("en-BD",{timeZone:"Asia/Dhaka",hour12:true,month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+    const statusClass = {pending:"s-pending",confirmed:"s-confirmed",cancelled:"s-cancelled"}[p.status] || "";
+    const actions = p.status === "pending" ? `
+      <div class="pay-actions">
+        <button class="action-btn btn-confirm" onclick="confirmPay('${p._id}',this)">✅ Confirm</button>
+        <button class="action-btn btn-cancel"  onclick="cancelPay('${p._id}',this)">❌ Cancel</button>
+      </div>` : "";
+    return `
+    <div class="pay-card" id="pc-${p._id}">
+      <div class="pay-top">
+        <span class="pay-invoice">${p.invoice_id || "—"}</span>
+        <span class="pay-status ${statusClass}">${p.status.toUpperCase()}</span>
+      </div>
+      <div class="pay-amount">${p.amount} <span>USDT</span></div>
+      <div class="pay-meta">
+        <div class="meta-item"><div class="meta-lbl">Order ID</div><div class="meta-val">${p.order_id}</div></div>
+        <div class="meta-item"><div class="meta-lbl">User</div><div class="meta-val">@${p.username||"—"}</div></div>
+        <div class="meta-item"><div class="meta-lbl">Binance UID</div><div class="meta-val">${p.uid}</div></div>
+        <div class="meta-item"><div class="meta-lbl">Time</div><div class="meta-val">${date}</div></div>
+      </div>
+      ${actions}
+    </div>`;
+  }).join("");
+}
+
+async function confirmPay(id, btn) {
+  btn.textContent = "..."; btn.disabled = true;
+  const r = await fetch(`/admin/payments/${id}/confirm`,{method:"POST"});
+  const d = await r.json();
+  if (d.success) { toast("Payment confirmed!","success"); loadPayments(); loadStats(); }
+  else { toast(d.message||"Error","error"); btn.textContent="✅ Confirm"; btn.disabled=false; }
+}
+
+async function cancelPay(id, btn) {
+  btn.textContent = "..."; btn.disabled = true;
+  const r = await fetch(`/admin/payments/${id}/cancel`,{method:"POST"});
+  const d = await r.json();
+  if (d.success) { toast("Payment cancelled.","error"); loadPayments(); loadStats(); }
+  else { toast(d.message||"Error","error"); btn.textContent="❌ Cancel"; btn.disabled=false; }
+}
+
+// Enter key login
+document.addEventListener("keydown", e=>{
+  if(e.key==="Enter" && document.getElementById("loginScreen").style.display!=="none") doLogin();
+});
+
+checkAuth();
+</script>
+</body>
+</html>
