@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Payment Receipt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --or:#F97316;--bg:#FFF7F0;--card:#fff;--border:#FFE4CC;
+  --text:#1A1A1A;--muted:#78716C;--green:#16A34A;
+  --sans:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{font-family:var(--sans);background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{width:100%;max-width:400px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(249,115,22,.1);
+  animation:up .6s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* Success header */
+.rcpt-header{
+  background:linear-gradient(160deg,#FFF7ED,#FFEDD5);
+  border-bottom:1px solid var(--border);
+  padding:32px 20px 24px;
+  text-align:center;
+}
+.check-circle{
+  width:72px;height:72px;
+  background:linear-gradient(135deg,#F97316,#FB923C);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  box-shadow:0 8px 24px rgba(249,115,22,.35);
+  animation:pop .5s cubic-bezier(.16,1,.3,1) .2s both;
+}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.check-circle svg{color:#fff}
+.rcpt-title{font-size:22px;font-weight:900;margin-bottom:4px}
+.rcpt-sub{font-size:13px;color:var(--muted)}
+
+/* Status badge */
+.status-banner{
+  margin:16px 16px 0;
+  padding:14px;
+  background:rgba(217,119,6,.08);
+  border:1.5px solid rgba(217,119,6,.25);
+  border-radius:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.status-icon{font-size:28px}
+.status-text h3{font-size:14px;font-weight:800;color:#D97706}
+.status-text p{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* Receipt rows */
+.rcpt-section{padding:16px}
+.rcpt-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 0;
+  border-bottom:1px solid var(--border);
+}
+.rcpt-row:last-child{border-bottom:none}
+.rk{font-size:12px;font-weight:600;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+.rv{font-size:13px;font-weight:700;color:var(--text);text-align:right;max-width:220px;word-break:break-all}
+.rv.mono{font-family:var(--mono)}
+.rv.hl{color:var(--or);font-size:16px}
+
+/* Amount highlight */
+.amount-banner{
+  margin:0 16px;
+  background:linear-gradient(135deg,#F97316,#FB923C);
+  border-radius:14px;padding:18px 20px;text-align:center;
+  box-shadow:0 6px 20px rgba(249,115,22,.25);
+}
+.ab-lbl{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:6px}
+.ab-amt{font-family:var(--mono);font-size:36px;font-weight:700;color:#fff;letter-spacing:-1px}
+.ab-unit{font-size:14px;font-weight:800;color:rgba(255,255,255,.8)}
+
+.foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--muted);
+}
+.foot span{display:flex;align-items:center;gap:4px}
+
+/* Pulse animation for pending */
+@keyframes pendingPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.pending-pulse{animation:pendingPulse 2s ease-in-out infinite}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="rcpt-header">
+      <div class="check-circle">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <h2 class="rcpt-title">Submitted!</h2>
+      <p class="rcpt-sub" id="rcptBotName">Payment submitted for review</p>
+    </div>
+
+    <!-- Status -->
+    <div class="status-banner">
+      <div class="status-icon pending-pulse">⏳</div>
+      <div class="status-text">
+        <h3>Pending Verification</h3>
+        <p>Admin will confirm your payment shortly</p>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <div class="amount-banner" style="margin-top:16px">
+      <div class="ab-lbl">Amount Sent</div>
+      <div><span class="ab-amt" id="rcptAmount">0.00</span> <span class="ab-unit">USDT</span></div>
+    </div>
+
+    <!-- Details -->
+    <div class="rcpt-section">
+      <div class="rcpt-row">
+        <span class="rk">Invoice ID</span>
+        <span class="rv mono" id="rcptInvoice">—</span>
+      </div>
+      <div class="rcpt-row">
+        <span class="rk">Order ID</span>
+        <span class="rv mono" id="rcptOrder">—</span>
+      </div>
+      <div class="rcpt-row">
+        <span class="rk">Binance UID</span>
+        <span class="rv mono" id="rcptUid">—</span>
+      </div>
+      <div class="rcpt-row">
+        <span class="rk">Submitted</span>
+        <span class="rv" id="rcptTime">—</span>
+      </div>
+      <div class="rcpt-row">
+        <span class="rk">Status</span>
+        <span class="rv" style="color:#D97706;background:rgba(217,119,6,.1);padding:3px 10px;border-radius:20px;font-size:12px">⏳ PENDING</span>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="#22c55e"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z"/></svg>
+        Secured &amp; Encrypted
+      </span>
+      <span>Binance Pay</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Data comes from URL params (set by script.js after submit)
+const p = new URLSearchParams(location.search);
+document.getElementById("rcptBotName").textContent  = (p.get("bot_name")||"") + " — Payment Receipt";
+document.getElementById("rcptAmount").textContent   = parseFloat(p.get("amount")||0).toFixed(2);
+document.getElementById("rcptInvoice").textContent  = p.get("invoice_id") || "—";
+document.getElementById("rcptOrder").textContent    = p.get("order_id")   || "—";
+document.getElementById("rcptUid").textContent      = p.get("uid")        || "—";
+document.getElementById("rcptTime").textContent     = new Date().toLocaleString("en-BD",{timeZone:"Asia/Dhaka",hour12:true});
+document.title = "Receipt — " + (p.get("bot_name")||"Payment");
+</script>
+</body>
+</html>
