@@ -1,4 +1,3 @@
-// ── Params ────────────────────────────────────
 function getParams() {
   const p = new URLSearchParams(window.location.search);
   return {
@@ -12,21 +11,18 @@ function getParams() {
   };
 }
 
-// ── Render ────────────────────────────────────
 function renderPage() {
   const p = getParams();
   document.getElementById("botName").textContent    = p.botName;
   document.getElementById("invoiceId").textContent  = p.invoiceId;
   document.getElementById("binanceUID").textContent = p.uid;
   document.title = "Invoice — " + p.botName;
-
   const amt = parseFloat(p.amount);
   const d   = isNaN(amt) ? "0.00" : amt.toFixed(2);
   document.getElementById("amountDisplay").textContent = d;
   document.getElementById("amountStep").textContent    = d + " USDT";
 }
 
-// ── Copy UID ──────────────────────────────────
 function copyUID() {
   const uid = document.getElementById("binanceUID").textContent;
   if (!uid || uid === "N/A") { showToast("No UID available", "error"); return; }
@@ -47,7 +43,6 @@ function copyUID() {
   });
 }
 
-// ── Validate Order ID ─────────────────────────
 function validateOrderId(id) {
   if (!/^\d{18}$/.test(id))
     return { valid:false, msg:"Order ID must be exactly 18 digits." };
@@ -66,7 +61,6 @@ function validateOrderId(id) {
   return { valid:true };
 }
 
-// ── Verify ────────────────────────────────────
 async function verifyPayment() {
   const orderId = document.getElementById("txnInput").value.trim();
   const btn     = document.querySelector(".verify-btn");
@@ -95,10 +89,21 @@ async function verifyPayment() {
     });
     const data = await res.json();
     btn.classList.remove("loading");
+
     if (data.success) {
       btn.classList.add("success");
       btn.querySelector(".btn-text").textContent = "Submitted ✓";
-      showToast("Payment submitted successfully!", "success");
+      // Redirect to receipt with all info
+      setTimeout(() => {
+        const rp = new URLSearchParams({
+          amount:     p.amount,
+          bot_name:   p.botName,
+          uid:        p.uid,
+          invoice_id: data.invoice_id || p.invoiceId,
+          order_id:   data.order_id   || orderId,
+        });
+        window.location.href = "/receipt?" + rp.toString();
+      }, 700);
     } else {
       btn.querySelector(".btn-text").textContent = "Confirm Payment";
       showToast(data.message || "Failed. Try again.", "error");
@@ -110,7 +115,6 @@ async function verifyPayment() {
   }
 }
 
-// ── Shake ─────────────────────────────────────
 function shakeInput() {
   const el = document.getElementById("txnInput");
   el.style.borderColor = "#DC2626";
@@ -123,13 +127,11 @@ function shakeInput() {
   setTimeout(()=>{el.style.borderColor="";el.style.boxShadow="";},1800);
 }
 
-// ── Toast ─────────────────────────────────────
 let _tt = null;
 function showToast(msg, type="success") {
   let t = document.querySelector(".toast");
   if (!t) { t=document.createElement("div"); t.className="toast"; document.body.appendChild(t); }
-  t.textContent = msg;
-  t.className = "toast " + type;
+  t.textContent = msg; t.className = "toast " + type;
   if(_tt) clearTimeout(_tt);
   requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add("show")));
   _tt = setTimeout(()=>t.classList.remove("show"), 3500);
